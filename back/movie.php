@@ -1,6 +1,6 @@
-<button>新增電影</button>
+<button onclick="location.href='?do=add_movie'">新增電影</button>
 <hr>
-<div style="display: flex; width: 100%">
+<div style="display: flex; width: 100%; justify-content: space-around;">
     <div>
         <img src="" alt="">
     </div>
@@ -9,7 +9,7 @@
         <img src="./icon/" alt="">
     </div>
     <div>
-        <div style="display: flex;">
+        <div style="display: flex; justify-content: space-around;">
             <div style="width: 33%">片名:</div>
             <div style="width: 33%">片長:</div>
             <div style="width: 33%">上映時間:</div>
@@ -22,7 +22,7 @@
             <button>刪除電影</button>
         </div>
         <div>
-            劇情簡介
+            劇情介紹:
         </div>
     </div>
 </div>
