@@ -27,8 +27,29 @@
 	</marquee>
 </div>
 <div id="mm">
+
 	<?php
-	include "back/main.php";
+	if (!empty($_POST)) {
+		if ($_POST['acc'] == 'admin' && $_POST['pw'] == '1234') {
+			$_SESSION['login'] = 1;
+		} else {
+			echo "<div class='ct' style='color: red;'>帳號或密碼錯誤</div>";
+		}
+	}
+
+	if (isset($_SESSION['login'])) {
+		//Backstage
+		include "./back/nav.php";
+		$do = $_GET['do'] ?? '';
+		$file = "./back/". $do . ".php";
+		if (file_exists($file)) {
+			include $file;
+		} else {
+			include "./back/main.php";
+		}
+	} else {
+		include "./back/login.php";
+	}
 	?>
 </div>
 <div id="bo"> ©Copyright 2010~2014 ABC影城 版權所有 </div>
