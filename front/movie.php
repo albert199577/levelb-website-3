@@ -12,7 +12,6 @@
     .movie-list > div {
         width: 47%;
         margin: 1%;
-        height: 100px;
         border: 1px solid white;
         border-radius: 15px;
     }
@@ -25,7 +24,6 @@
             <?php
                 $today = date("Y-m-d");
                 $ondate = date("Y-m-d", strtotime("-2 days"));
-                $rows = [1, 2, 3, 4];
                 // div page 
                 $all = $Movie -> math("count", "*");
                 $div = 4;
@@ -36,11 +34,11 @@
                 foreach ($rows as $key => $value) {
                     
             ?>
-            <div>
+            <div style="display: inline-block;">
                 <div class="ct">片名:<?=$value['name'];?></div>
                 <div>
                     <div>
-                        <img src="./img/<?=$value['poster'];?>.png" alt="" style="width: 60px">
+                        <img src="./img/<?=$value['poster'];?>" alt="" style="width: 60px">
                     </div>
                     <div>
                         <div>分級:
@@ -65,9 +63,11 @@
             <?php
             if ($now >= 0) {
                 $prev = $now - 1;
-                echo "<a href='index.php?p=$prev'>";
-                echo " < ";
-                echo "</a>";
+                if ($prev) {
+                    echo "<a href='index.php?p=$prev'>";
+                    echo " < ";
+                    echo "</a>";
+                }
             }
             
             for ($i = 1; $i <= $pages ; $i++) {
@@ -78,11 +78,11 @@
             }
             
             if (($now + 1) <= $pages) {
-            $next = $now + 1;
-            echo "<a href='index.php?p=$next'>";
-            echo " >";
-            echo "</a>";
-        }
+                $next = $now + 1;
+                echo "<a href='index.php?p=$next'>";
+                echo " >";
+                echo "</a>";
+            }
             ?>
         </div>
     </div>
