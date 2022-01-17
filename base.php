@@ -4,13 +4,14 @@ date_default_timezone_set("Asia/Taipei");
 
 session_start();
 
+
 class DB {
     protected $dsn = "mysql:host=localhost;charset=utf8;dbname=web03";
     protected $user = "root";
     protected $pw = "";
     protected $pdo;
     protected $table;
-
+    protected $level =  [1 => '普遍級', 2 => '保護級', 3 => '輔導級', 4 => '保護級'];
     public function __construct ($table) {
         $this -> table = $table;
         $this -> pdo = new PDO($this -> dsn, $this -> user, $this -> pw);
@@ -76,7 +77,7 @@ class DB {
                 }
             break;
         }
-        echo $sql;
+        // echo $sql;
         return $this->pdo->query($sql)->fetchColumn();
     }
 
@@ -115,6 +116,11 @@ class DB {
         return $this->pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
     }
 
+
+    //回傳分級文字
+    public function level($level) {
+        return $this->level[$level];
+    }
 }
 
 
