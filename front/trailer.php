@@ -9,16 +9,19 @@
         margin: auto;
         /* background-color: #fff; */
         overflow: hidden;
+        position: relative;
     }
 
     .lists .po {
         width: 100%;
         text-align: center;
         display: none;
+        position: absolute;
     }
 
-    .po img {
+    .po img, .icon img {
         width: 100%;
+        border: 2px solid #eee;
     }
 
     .controls, .icons {
@@ -32,14 +35,18 @@
 
     .icons {
         /* background-color: pink; */
-        width: 300px;
-        height: 90px;
+        width: 320px;
+        height: 110px;
         justify-items: center;
+        overflow: hidden;
+        font-size: 12px;
     }
 
     .icon {
         width: 80px;
-        background-color: lightblack;
+        position: relative;
+        flex-shrink: 0;
+        padding: 5px;
     }
 
     .left {
@@ -78,12 +85,11 @@
                 <?php
                     $pos = $Poster -> all(" WHERE `sh` = 1 ORDER BY `rank`");
                     foreach ($pos as $key => $value) {
-                        echo "<div class='po'>";
+                        echo "<div class='po' data-ani='{$value['ani']}'>";
                         echo "<img src='./img/{$value['path']}'>";
                         echo $value['name'];
                         echo "</div>";
                 ?>
-
                 <?php
                 }
                 ?>
@@ -93,10 +99,14 @@
                     <!-- left -->
                 </div>
                 <div class="icons">
-                    <div class="icon">sss</div>
-                    <div class="icon">sss</div>
-                    <div class="icon">sss</div>
-                    <div class="icon">sss</div>
+                <?php
+                    foreach ($pos as $key => $value) {
+                        echo "<div class='icon' data-ani='{$value['ani']}'>";
+                        echo "<img src='./img/{$value['path']}'>";
+                        echo $value['name'];
+                        echo "</div>";
+                    }
+                ?>
                 </div>
                 <div class="right">
                 </div>
@@ -107,4 +117,69 @@
 
 <script>
     $(".po").eq(0).show();
+    let i = 0;
+    let all = $('.po').length;
+    // console.log(all);
+    let slides = setInterval(() => {
+        // console.log($(".po").eq(i).data('ani'));
+        // $(".po").eq(i).hide(1000);
+        i++;
+        if (i > all - 1) {
+            i = 0;
+        }
+        ani(i);
+    }, 2500);
+
+    function ani(n) {
+        let ani = $(".po").eq(n).data('ani');
+        let now = $(".po:visible");
+        let next = $(".po").eq(n);
+        switch (ani) {
+            case 1:
+                now.fadeOut(1000, function () {
+                    next.fadeIn(1000);
+                });
+            break;
+            case 2:
+                now.hide(1000, function () {
+                    next.show(1000);
+                });
+            break;
+            case 3:
+                now.slideUp(1000, function () {
+                    next.slideDown(1000);
+                });
+            break;
+        }
+    }
+    
+    let p = 0;
+    $(".left, .right").click(function() {
+        if ($(this).hasClass('left')) {
+            if (p - 1 > 0) {
+                p--;
+            }
+        } else {
+            if (p + 1 < all - 3) {
+                p++;
+            }
+        }
+        $(".icon").animate({right:p*80}, 500);
+    });
+
+    $(".icon").on("click", function() {
+        clearInterval(slides);
+        let idx = $(this).index();
+        ani(idx);
+        i = idx;
+        slides = setInterval(() => {
+            i++;
+            if (i > all - 1) {
+                i = 0;
+            }
+            ani(i);
+
+        }, 2500)
+    });
+
 </script>
