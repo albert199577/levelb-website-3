@@ -4,6 +4,13 @@ $movie = $Movie -> find($_GET['id']);
 $date = $_GET['date'];
 $session = $ss[$_GET['session']];
 
+$ords = $Ord -> all(['movie' => $movie['name'], 'date' => $date, 'session' => $session]);
+$seats = [];
+foreach ($ords as $key => $ord) {
+    $seats = array_merge($seats, unserialize($ord['seat']));
+
+}
+
 ?>
 <style>
     .grid {
@@ -49,13 +56,19 @@ $session = $ss[$_GET['session']];
 <div class="grid">
     <?php 
     for ($i =0; $i < 20; $i++) {
-        
+        $booked = in_array($i, $seats) ? "booked" : "null";
     ?>
-    <div class="seat null">
+    <div class="seat <?=$booked;?>">
         <div class="ct">
             <?=floor($i / 5) + 1?>排<?=($i % 5) + 1?>號
         </div>
+        <?php 
+            if (!in_array($i, $seats)) {   
+        ?>
         <input class="check" type="checkbox" name="check" id="check" value="<?=$i?>">
+        <?php
+        }
+        ?>
     </div>
     <?php
     }
@@ -66,16 +79,15 @@ $session = $ss[$_GET['session']];
 <div>
     <div>您選擇的電影是:<?=$movie['name'];?></div>
     <div>您選擇的時刻是:<?=$date;?> <?=$session;?></div>
-    <div>您已經勾選了<span id="tickets"></span>張票，最高可以購買<span id=""></span>張票</div>
+    <div>您已經勾選了<span id="tickets">0</span>張票，最高可以購買<span id="">4</span>張票</div>
     <div>
         <button onclick="prev()">回上一步</button>
-        <button>完成訂購</button>
+        <button onclick="order()">完成訂購</button>
     </div>
 </div>
 
 <script>
     let seats = [];
-
     $(".check").on("click", function() {
         console.log(seats);
         if ($(this).prop("checked")) {
@@ -90,4 +102,16 @@ $session = $ss[$_GET['session']];
         }
         $("#tickets").text(seats.length);
     })
+
+    function order() {
+        let order = {
+            id: $("#movie").val(),
+            date: $("#date").val(),
+            session: $("#session").val(),
+            seats
+        }
+        $.post("./api/order.php", order, (result) => {
+            $("#mm").html(result);
+        })
+    }
 </script>
