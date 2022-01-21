@@ -18,7 +18,6 @@
     select {
         width: 100%;
     }
-    
 </style>
 
 
@@ -63,8 +62,14 @@ let id = (new URL(location)).searchParams.get("id");
 getMovies(id);
 
 $("#movie").on("change", () => {
-    getDays()
+    getDays();
 })
+
+$("#date").on("change", () => {
+    getSessions();
+})
+
+
 
 function booking() {
     $("#order, #booking").toggle();
