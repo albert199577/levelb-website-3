@@ -1,6 +1,8 @@
 <?php
 
 $movie = $Movie -> find($_GET['id']);
+$day = date("j", strtotime($movie['ondate']));
+$month = date("n", strtotime($movie['ondate']));
 
 
 ?>
@@ -38,14 +40,16 @@ $movie = $Movie -> find($_GET['id']);
                 <select name="month">
                     <?php
                     for ($i = 1; $i <= 12; $i ++) {
-                        echo "<option value='$i'>$i</option>";
+                        $selected = ($i == $month) ? "selected" : "";
+                        echo "<option value='$i' $selected>$i</option>";
                     }
                     ?>
                 </select>月
                 <select name="day">
                     <?php
                     for ($i = 1; $i <= 31; $i ++) {
-                        echo "<option value='$i'>$i</option>";
+                        $selected = ($i == $day) ? "selected" : "";
+                        echo "<option value='$i' $selected>$i</option>";
                     }
                     ?>
                 </select>日
@@ -56,7 +60,7 @@ $movie = $Movie -> find($_GET['id']);
             </div>
             <div>
                 <label>導演:</label>
-                <input type="text" name="director">
+                <input type="text" name="director" value="<?=$movie['director'];?>">
             </div>
             <div>
                 <label>預告影片:</label>
@@ -71,7 +75,7 @@ $movie = $Movie -> find($_GET['id']);
     <div style="display: flex;">
         <div style="width: 15%">劇情簡介:</div>
         <div style="width: 85%">
-            <textarea name="intro" style="width: 99%" value="<?=$movie['intro'];?>"></textarea>
+            <textarea name="intro" style="width: 99%"><?=$movie['intro'];?></textarea>
         </div>
     </div>
     <div class="ct">
