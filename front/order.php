@@ -51,12 +51,12 @@
     </div>
     <div class="row0">
         <div class="ct">
-            <button>確定</button>
-            <button>重置</button>
+            <button onclick="booking()">確定</button>
+            <button onclick="reset()">重置</button>
         </div>
     </div>
 </div>
-
+<div id="booking" style="display: none;">劃位</div>
 <script>
 let id = (new URL(location)).searchParams.get("id");
 
@@ -65,6 +65,28 @@ getMovies(id);
 $("#movie").on("change", () => {
     getDays()
 })
+
+function booking() {
+    $("#order, #booking").toggle();
+
+    let order = {
+        id: $("#movie").val(),
+        date: $("#date").val(),
+        session: $("#session").val()
+    }
+    $.get("./api/booking.php", order, (booking) => {
+        $("#booking").html(booking);
+    })
+}
+
+function reset() {
+    getMovies(id);
+}
+
+function prev() {
+    $("#order, #booking").toggle();
+    $("#booking").html("");
+}
 
 function getMovies(id) {
     $.get("./api/get_movies.php", {id}, (movies)=>{
