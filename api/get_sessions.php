@@ -9,7 +9,7 @@ if ($date != date("Y-m-d") || date("G") < 14) {
 }
 
 for ($i = (6 - $s); $i <= 5; $i++) {
-    $seats = $Ord -> math('sum', 'qt', ['movie' => $movie['name'], 'date' => $date, 'session' => $ss[$i]])
+    $seats = $Ord -> math('sum', 'qt', ['movie' => $movie['name'], 'date' => $date, 'session' => $ss[$i]]);
     echo "<option value='$i'>{$ss[$i]} 剩餘座位" . (20 - $seats) . "</option>";
 }
 
